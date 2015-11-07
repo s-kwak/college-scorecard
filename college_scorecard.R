@@ -9,10 +9,14 @@ dict_name <- list.files(pattern = 'Dictionary')
 dict <- read.csv(dict_name, sep = ',', header = TRUE, stringsAsFactors = FALSE)
 
 # read in and clean college data
-college <- read.csv('MERGED2013_PP.csv', sep = ',',
+
+data_year <- '2013'  # CHANGE THIS TO CHANGE THE DATA YEAR
+src_name <- list.files(pattern = data_year)
+college <- read.csv(src_name, sep = ',',
                     header = TRUE, stringsAsFactors = FALSE,
                     na.strings = c('PrivacySuppressed', 'NULL'))
 college <- tbl_df(college)
+names(college)[1] <- 'UNITID'
 
 # ----
 
@@ -42,3 +46,6 @@ assign(paste(types[i], 'd', sep = '_'), college %>%
 
 
 # tidy data into long format where relevant
+
+academics_d_l <- academics_d %>%
+  gather(metric, value, 4:length(names(academics_d)))
